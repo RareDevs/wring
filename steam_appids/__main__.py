@@ -4,7 +4,7 @@ import orjson
 import requests
 
 steam_api_url = "https://api.steampowered.com/IStoreService/GetAppList/v1/"
-
+version = 3
 
 if __name__ == "__main__":
     have_more_results = True
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         if have_more_results := response.get("have_more_results", False):
             last_appid = response["last_appid"]
         for app in response["apps"]:
-            games.update({str(app["appid"]): app["name"]})
+            games.update({app["name"]: str(app["appid"])})
 
     with open("steam_appids.json", "w", encoding="utf-8") as f:
-        f.write(orjson.dumps({"version": 2, "games": games}).decode("utf-8"))
+        f.write(orjson.dumps({"version": version, "games": games}).decode("utf-8"))
