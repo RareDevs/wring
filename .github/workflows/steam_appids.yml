@@ -1,4 +1,4 @@
-name: Steam AppIDs
+name: steam_appids
 
 on:
   workflow_dispatch:
