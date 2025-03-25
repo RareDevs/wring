@@ -39,6 +39,7 @@ jobs:
         run: |
           python3 -m steam_appids
           mv steam_appids.json assets/
+          mv steam_appids_version.json assets/
       - uses: actions/upload-pages-artifact@v3
         id: deployment
         with:

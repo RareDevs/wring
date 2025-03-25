@@ -32,3 +32,5 @@ if __name__ == "__main__":
 
     with open("steam_appids.json", "w", encoding="utf-8") as f:
         f.write(orjson.dumps({"version": version, "games": games}).decode("utf-8"))
+    with open("steam_appids_version.json", "w", encoding="utf-8") as f:
+        f.write(orjson.dumps({"version": version}).decode("utf-8"))
