@@ -2,6 +2,13 @@ name: steam_appids
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - steam_appids/*
 
 permissions:
   id-token: write
