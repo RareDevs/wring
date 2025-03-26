@@ -13,11 +13,17 @@ if __name__ == "__main__":
         print("Missing steam api key!")
         exit(1)
 
+    def is_valid_title(title: str) -> bool:
+        return bool(title) and len(title) > 2
+
     data = {}
 
     resp = requests.get(isteamapps_url)
     apps = orjson.loads(resp.text).get("applist", {}).get("apps", {})
-    data.update({str(app["appid"]): app["name"] for app in apps})
+    data.update(
+        { app["name"]: str(app["appid"]) for app in apps if is_valid_title(app["name"]) }
+    )
+
 
     have_more_results = True
     last_appid = 0
@@ -31,13 +37,13 @@ if __name__ == "__main__":
     while have_more_results:
         payload.update({"last_appid": last_appid})
         resp = requests.get(istoreservice_url, params=payload)
-        response = orjson.loads(resp.text)["response"]
+        response = orjson.loads(resp.text).get("response", {})
+        apps = response.get("apps", {})
         if have_more_results := response.get("have_more_results", False):
             last_appid = response["last_appid"]
-        data.update({str(app["appid"]): app["name"] for app in response["apps"]})
-
-    # Invert key/value pairs
-    data = {v: k for k, v in data.items() if bool(v) and len(v) > 2}
+        data.update(
+            { app["name"]: str(app["appid"]) for app in apps if is_valid_title(app["name"]) }
+        )
 
     with open("steam_appids.json", "w", encoding="utf-8") as f:
         f.write(orjson.dumps({"version": version, "games": data}).decode("utf-8"))
