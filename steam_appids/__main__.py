@@ -32,11 +32,11 @@ if __name__ == "__main__":
         "key": steam_api_key,
         "include_games": True,
         "include_dlc": False,
-        "max_results": 1000,
+        # "max_results": 5000,
     }
 
     while have_more_results:
-        payload.update({"last_appid": last_appid})
+        payload["last_appid"] = last_appid
         resp = requests.get(istoreservice_url, params=payload)
         response = orjson.loads(resp.text).get("response", {})
         entries = response.get("apps", {})
@@ -46,9 +46,22 @@ if __name__ == "__main__":
             if is_valid_title(entry["name"]):
                 data[entry["name"]] = str(entry["appid"])
 
+    version_json = {
+        "version": version,
+        "entries": len(data),
+    }
+
+    print(version_json)
+
+    appids_json = {
+        "version": version,
+        "entries": len(data),
+        "games": data
+    }
+
     with open("steam_appids.json", "w", encoding="utf-8") as f:
-        f.write(orjson.dumps({"version": version, "games": data}).decode("utf-8"))
+        f.write(orjson.dumps(appids_json).decode("utf-8"))
     with open("steam_appids.json.xz", "wb") as f:
-        f.write(lzma.compress(orjson.dumps({"version": version, "games": data})))
+        f.write(lzma.compress(orjson.dumps(appids_json)))
     with open("steam_appids_version.json", "w", encoding="utf-8") as f:
-        f.write(orjson.dumps({"version": version}).decode("utf-8"))
+        f.write(orjson.dumps(version_json).decode("utf-8"))
