@@ -21,10 +21,10 @@ if __name__ == "__main__":
     data = {}
 
     resp = requests.get(isteamapps_url)
-    apps = orjson.loads(resp.text).get("applist", {}).get("apps", {})
-    for app in apps:
-        if is_valid_title(app["name"]):
-            data[app["name"]] = str(app["appid"])
+    entries = orjson.loads(resp.text).get("applist", {}).get("apps", {})
+    for entry in entries:
+        if is_valid_title(entry["name"]):
+            data[entry["name"]] = str(entry["appid"])
 
     have_more_results = True
     last_appid = 0
@@ -39,12 +39,12 @@ if __name__ == "__main__":
         payload.update({"last_appid": last_appid})
         resp = requests.get(istoreservice_url, params=payload)
         response = orjson.loads(resp.text).get("response", {})
-        apps = response.get("apps", {})
+        entries = response.get("apps", {})
         if have_more_results := response.get("have_more_results", False):
             last_appid = response["last_appid"]
-        for app in apps:
-            if is_valid_title(app["name"]):
-                data[app["name"]] = str(app["appid"])
+        for entry in entries:
+            if is_valid_title(entry["name"]):
+                data[entry["name"]] = str(entry["appid"])
 
     with open("steam_appids.json", "w", encoding="utf-8") as f:
         f.write(orjson.dumps({"version": version, "games": data}).decode("utf-8"))
