@@ -30,7 +30,7 @@ if __name__ == "__main__":
     payload = {
         "key": steam_api_key,
         "include_games": True,
-        "include_dlc": True,
+        "include_dlc": False,
         "max_results": 5000,
     }
 
