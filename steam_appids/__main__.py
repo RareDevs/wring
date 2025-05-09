@@ -20,31 +20,33 @@ if __name__ == "__main__":
 
     data = {}
 
-    resp = requests.get(isteamapps_url)
-    entries = orjson.loads(resp.text).get("applist", {}).get("apps", {})
-    for entry in entries:
-        if is_valid_title(entry["name"]):
-            data[entry["name"]] = str(entry["appid"])
-
-    have_more_results = True
-    last_appid = 0
-    payload = {
-        "key": steam_api_key,
-        "include_games": True,
-        "include_dlc": False,
-        # "max_results": 5000,
-    }
-
-    while have_more_results:
-        payload["last_appid"] = last_appid
-        resp = requests.get(istoreservice_url, params=payload)
-        response = orjson.loads(resp.text).get("response", {})
-        entries = response.get("apps", {})
-        if have_more_results := response.get("have_more_results", False):
-            last_appid = response["last_appid"]
+    for it in range(5):
+        resp = requests.get(isteamapps_url)
+        entries = orjson.loads(resp.text).get("applist", {}).get("apps", {})
         for entry in entries:
             if is_valid_title(entry["name"]):
                 data[entry["name"]] = str(entry["appid"])
+
+    for it in range(5):
+        have_more_results = True
+        last_appid = 0
+        payload = {
+            "key": steam_api_key,
+            "include_games": True,
+            "include_dlc": False,
+            "max_results": 50000,
+        }
+        while have_more_results:
+            payload["last_appid"] = last_appid
+            resp = requests.get(istoreservice_url, params=payload)
+            response = orjson.loads(resp.text).get("response", {})
+            entries = response.get("apps", {})
+            if have_more_results := response.get("have_more_results", False):
+                last_appid = response["last_appid"]
+                assert (len(entries) == payload.get("max_results", 10000))
+            for entry in entries:
+                if is_valid_title(entry["name"]):
+                    data[entry["name"]] = str(entry["appid"])
 
     version_json = {
         "version": version,
