@@ -1,5 +1,6 @@
 import os
 import lzma
+import sys
 
 import orjson
 import requests
@@ -7,6 +8,8 @@ import requests
 isteamapps_url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
 istoreservice_url = "https://api.steampowered.com/IStoreService/GetAppList/v1/"
 version = 3
+
+steamids_url = "https://raredevs.github.io/wring/steam_appids.json.xz"
 
 
 def is_valid_title(title: str) -> bool:
@@ -20,14 +23,22 @@ if __name__ == "__main__":
 
     data = {}
 
-    for it in range(5):
+    try:
+        resp = requests.get(steamids_url)
+        text = lzma.decompress(resp.content).decode("utf-8")
+        json = orjson.loads(text)
+        data = json["games"]
+    except Exception as e:
+        data = {}
+
+    for it in range(3):
         resp = requests.get(isteamapps_url)
         entries = orjson.loads(resp.text).get("applist", {}).get("apps", {})
         for entry in entries:
             if is_valid_title(entry["name"]):
                 data[entry["name"]] = str(entry["appid"])
 
-    for it in range(5):
+    for it in range(3):
         have_more_results = True
         last_appid = 0
         payload = {
