@@ -31,12 +31,13 @@ if __name__ == "__main__":
     except Exception as e:
         data = {}
 
-    for it in range(3):
-        resp = requests.get(isteamapps_url)
-        entries = orjson.loads(resp.text).get("applist", {}).get("apps", {})
-        for entry in entries:
-            if is_valid_title(entry["name"]):
-                data[entry["name"]] = str(entry["appid"])
+    # for it in range(3):
+    #     resp = requests.get(isteamapps_url)
+    #     print(resp.text)
+    #     entries = orjson.loads(resp.text).get("applist", {}).get("apps", {})
+    #     for entry in entries:
+    #         if is_valid_title(entry["name"]):
+    #             data[entry["name"]] = str(entry["appid"])
 
     for it in range(3):
         have_more_results = True
