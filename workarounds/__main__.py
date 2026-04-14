@@ -123,7 +123,7 @@ __workarounds: dict[str, dict[str, dict[str, dict[str, Union[str, tuple]]]]] = {
     "03c9fe3b2869452ba8433ee7708a3e93": {
         "options": {
             "override_exe": {
-                "value": "F1Manager24/Binaries/Win64/F1Manage",
+                "value": "F1Manager24/Binaries/Win64/F1Manager24.exe",
                 "os": __os_all,
             },
         },
