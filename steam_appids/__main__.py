@@ -4,11 +4,14 @@ import lzma
 import orjson
 import requests
 
+github_event = os.environ.get("WRING_EVENT", "test")
+
 isteamapps_url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
 istoreservice_url = "https://api.steampowered.com/IStoreService/GetAppList/v1/"
 version = 3
 
-steamids_url = "https://raredevs.github.io/wring/steam_appids.json.xz"
+steam_appids_url = "https://raredevs.github.io/wring/steam_appids.json.xz"
+steam_appids_version_url = "https://raredevs.github.io/wring/steam_appids_version.json"
 
 
 def is_valid_title(title: str) -> bool:
@@ -23,7 +26,7 @@ if __name__ == "__main__":
     data = {}
 
     try:
-        resp = requests.get(steamids_url)
+        resp = requests.get(steam_appids_url)
         text = lzma.decompress(resp.content).decode("utf-8")
         json = orjson.loads(text)
         data = json["games"]
@@ -51,22 +54,22 @@ if __name__ == "__main__":
                 if is_valid_title(entry["name"]):
                     data[entry["name"]] = str(entry["appid"])
 
-    version_json = {
+    version_dict = {
         "version": version,
         "entries": len(data),
     }
 
-    print(version_json)
+    print(version_dict)
 
-    appids_json = {
+    appids_dict = {
         "version": version,
         "entries": len(data),
         "games": data
     }
 
     with open("steam_appids.json", "w", encoding="utf-8") as f:
-        f.write(orjson.dumps(appids_json).decode("utf-8"))
+        f.write(orjson.dumps(appids_dict).decode("utf-8"))
     with open("steam_appids.json.xz", "wb") as f:
-        f.write(lzma.compress(orjson.dumps(appids_json)))
+        f.write(lzma.compress(orjson.dumps(appids_dict)))
     with open("steam_appids_version.json", "w", encoding="utf-8") as f:
-        f.write(orjson.dumps(version_json).decode("utf-8"))
+        f.write(orjson.dumps(version_dict).decode("utf-8"))

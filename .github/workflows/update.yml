@@ -1,4 +1,4 @@
-name: steam_appids
+name: update
 
 on:
   workflow_dispatch:
@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - steam_appids/*
+      - workarounds/*
 
 permissions:
   id-token: write
@@ -16,7 +17,7 @@ permissions:
 
 jobs:
   fetch:
-    name: Fetch
+    name: Update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,11 +37,19 @@ jobs:
       - name: Fetch Steam AppIDs for games
         env:
           STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+          WRING_EVENT: ${{ github.event_name }}
         run: |
           python3 -m steam_appids
           mv steam_appids.json assets/
           mv steam_appids.json.xz assets/
           mv steam_appids_version.json assets/
+      - name: Generate workarounds
+        env:
+          WRING_EVENT: ${{ github.event_name }}
+        run: |
+          python3 -m workarounds
+          mv workarounds.json assets/
+          mv workarounds_version.json assets/
       - uses: actions/upload-pages-artifact@v3
         id: deployment
         with:
