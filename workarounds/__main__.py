@@ -137,7 +137,72 @@ __workarounds: dict[str, dict[str, dict[str, dict[str, Union[str, tuple]]]]] = {
             },
         },
     },
+    # Grand Theft Auto V Enhanced
+    "8769e24080ea413b8ebca3f1b8c50951": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
+    # Grand Theft Auto V
+    "9d2d0eb64d5c44529cece33fe2a46482": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
+    # Red Dead Redemption
+    "c180bd9859624278aa20f1333918498a": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
+    # Red Dead Redemption 2
+    "Heather": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
+    # Grand Theft Auto: San Andreas – The Definitive Edition
+    "0828ecd4297c4f89bfcc45420e695b67": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
+    # Grand Theft Auto: Vice City – The Definitive Edition
+    "bb5b67d981cd47779e98a3a678360238": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
+    # Grand Theft Auto III – The Definitive Edition
+    "3419b0161b3c4b5da5f33ab69ad030f0": {
+        "environ": {
+            "LEGENDARY_WRAPPER_EXE": {
+                "value": "{wrapper_exe}",
+                "os": __os_all,
+            },
+        },
+    },
 }
+
+# Heather, c180bd9859624278aa20f1333918498a
 
 if __name__ == "__main__":
 
