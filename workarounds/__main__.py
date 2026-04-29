@@ -163,6 +163,11 @@ games = [
         appname="3419b0161b3c4b5da5f33ab69ad030f0",
         environ=[Entry(name="LEGENDARY_WRAPPER_EXE", value="{wrapper_exe}", opsys=_os_all)]
     ),
+    # Rocket League®
+    Game(
+        appname="Sugar",
+        environ=[Entry(name="LANG", value="en_US.UTF-8", opsys=_os_compat)]
+    ),
 ]
 
 if __name__ == "__main__":
